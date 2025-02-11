@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(117deg, #ff41f7 0%, rgba(255, 73, 73, 0.81) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0.5);
+            margin-top: 20px; /* Add some space between the video and the text */
+        }
+
+        video {
+            width: 90%; /* Adjust the width for mobile devices */
+            max-width: 600px; /* Maximum width */
+            border-radius: 10px; /* Optional: Add rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow */
+        }
+
+        body {
+            animation: changeBackground 5s infinite alternate;
+        }
+
+        @keyframes changeBackground {
+            0% {
+                background: linear-gradient(117deg, #ff41f7 0%, rgba(255, 73, 73, 0.81) 100%);
+            }
+
+            100% {
+                background: linear-gradient(117deg, rgba(255, 73, 73, 0.81) 0%, #ff41f7 100%);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px; /* Smaller font size for tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px; /* Smaller font size for smartphones */
+            }
+        }
+    </style>
+
+    <!-- Include Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+</head>
+
+<body>
+    <!-- Background Song -->
+    <audio id="backgroundSong">
+        <source src="applause-cheer-236786.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Video -->
+    <video autoplay loop muted playsinline>
+        <source src="Teddy.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Surprise Text -->
+    <h1 id="surpriseText">🐻HAPPY TEDDY BEAR DAY🐻‍❄️</h1>
+
+    <script>
+        // Animate the text when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            anime({
+                targets: "#surpriseText",
+                opacity: 1,
+                scale: 1,
+                duration: 1000,
+                easing: "easeOutElastic",
+            });
+
+            anime({
+                targets: "#surpriseMessage",
+                opacity: 1,
+                delay: 500, // Delay the animation
+                duration: 1000,
+                easing: "easeOutQuad",
+            });
+
+            // Set the audio to start from the 3-second mark and play only once
+            const audio = document.getElementById("backgroundSong");
+            audio.currentTime = 3; // Start playback from 3 seconds
+            audio.play(); // Ensure the audio plays
+            audio.loop = false; // Ensure the audio plays only once
+        });
+    </script>
+
+    <!-- Confetti Effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+            });
+        });
+    </script>
+</body>
+
+</html>

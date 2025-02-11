@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propose</title>
+    <meta name="description" content="You are the only one who understands me even more than myself. You are the only one with whom I can share everything, even my secrets. I want you to be with me always.! I LOVE YOU!">
+    <!-- Open Graph Image Meta Tag -->
+    <meta property="og:image" content="https://static.toiimg.com/thumb/msid-74004000,imgsize-511880,width-400,resizemode-4/74004000.jpg">
+    <link rel="shortcut icon" type="image/png" href="https://github.com/images/modules/search/mona-love.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <style>
+        /* Add a cute romantic font */
+        @font-face {
+            font-family: 'RomanticFont';
+            src: url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Covers */
+        .cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            transition: transform 1.5s ease;
+        }
+
+        #coverTop {
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(rgb(124, 118, 230), rgb(38, 0, 255));
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        #coverBottom {
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(rgb(226, 118, 215), rgb(255, 0, 195));
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Lock */
+        .lock-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+
+        .lock {
+            font-size: 80px;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .lock.disabled {
+            pointer-events: none;
+            /* opacity: 0.5; */
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Proposal Page */
+        #proposalPage {
+            display: none;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(117deg, #ff41f7 0%, rgba(255, 73, 73, 0.81) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 72px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            color: gray;
+            background-color: white;
+            border: none;
+            border-radius: 50px;
+            width: 200px;
+            height: 50px;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #ff4690;
+            border: 2px solid white;
+        }
+
+        @media (max-width: 1148px) {
+            h1 {
+                font-size: 50px;
+            }
+            .btn {
+                width: 150px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 795px) {
+            h1 {
+                font-size: 40px;
+            }
+        }
+
+        #showMessage {
+            display: none;
+        }
+
+        #showMessage h1 {
+            font-size: 50px;
+        }
+
+        /* Animate Text */
+        .ml6 {
+            position: relative;
+        }
+
+        .ml6 .text-wrapper {
+            position: relative;
+            display: inline-block;
+            padding-top: 0.2em;
+            padding-right: 0.05em;
+            padding-bottom: 0.1em;
+            overflow: hidden;
+        }
+
+        .ml6 .letter {
+            display: inline-block;
+            line-height: 1em;
+        }
+
+        /* Lock shrink and disappear animation */
+        .shrink-disappear {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        /* Cover Buttons */
+        .cover-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .cover-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Top Cover Button */
+        .top-btn {
+            top: 30%;
+            left: 30%;
+            transform: translateX(-50%);
+            border-color: rgb(255, 0, 195);
+        }
+
+        /* Bottom Cover Button */
+        .bottom-btn {
+            bottom: 30%;
+            right: 30%;
+            transform: translateX(50%);
+            border-color: rgb(38, 0, 255);
+        }
+
+        /* Expanded state */
+        .cover-btn.expand {
+            width: 150px;
+            height: 150px;
+            font-size: 24px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-width: 4px;
+        }
+
+        /* Text input inside expanded button */
+        .cover-btn.expand input {
+            width: 80%;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Hide button text when expanded */
+        .cover-btn.expand .btn-text {
+            display: none;
+        }
+
+        /* Border animations */
+        .cover-btn.correct {
+            border-color: green;
+            animation: border-pulse-green 1s infinite;
+        }
+
+        .cover-btn.wrong {
+            border-color: red;
+            animation: border-pulse-red 1s infinite;
+        }
+
+        @keyframes border-pulse-green {
+            0%, 100% {
+                border-color: green;
+            }
+            50% {
+                border-color: lime;
+            }
+        }
+
+        @keyframes border-pulse-red {
+            0%, 100% {
+                border-color: red;
+            }
+            50% {
+                border-color: darkred;
+            }
+        }
+
+        /* Lyrics Container */
+        #lyricsContainer {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            z-index: 30;
+            font-family: 'Pacifico', cursive; /* Romantic font */
+        }
+
+        /* Responsive Styles for Smartphones and Tablets */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .btn {
+                width: 120px;
+                height: 35px;
+                font-size: 14px;
+            }
+
+            .lock {
+                font-size: 60px;
+            }
+
+            .cover-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .cover-btn.expand {
+                width: 120px;
+                height: 120px;
+                font-size: 20px;
+            }
+
+            .cover-btn.expand input {
+                font-size: 12px;
+            }
+
+            #lyricsContainer {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .btn {
+                width: 100px;
+                height: 30px;
+                font-size: 12px;
+            }
+
+            .lock {
+                font-size: 50px;
+            }
+
+            .cover-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .cover-btn.expand {
+                width: 100px;
+                height: 100px;
+                font-size: 16px;
+            }
+
+            .cover-btn.expand input {
+                font-size: 10px;
+            }
+
+            #lyricsContainer {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Covers -->
+    <div id="coverTop" class="cover">
+        <button class="cover-btn top-btn">
+            <span class="btn-text">🩷</span>
+        </button>
+    </div>
+    <div id="coverBottom" class="cover">
+        <button class="cover-btn bottom-btn">
+            <span class="btn-text">💙</span>
+        </button>
+    </div>
+
+    <!-- Lock -->
+    <div class="lock-container">
+        <div class="lock disabled" id="lock">🔒</div>
+    </div>
+
+    <audio id="loveSong" src="teddylove.mp3"></audio>
+
+    <!-- Proposal Page -->
+    <div id="proposalPage">
+        <!-- Lyrics Container -->
+        <div id="lyricsContainer"></div>
+
+        <div id="parentElement">
+            <div class="d-flex justify-content-center">
+                <lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_mywfoph1.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+            </div>
+            <h1>Will you be Mine?🥰</h1>
+            <div class="d-flex justify-content-center">
+                <button onclick="propose()" class="btn btn-primary">Yes!</button> <br>
+                <button onclick="propose()" class="btn btn-primary">Of Course, Yes!</button>
+            </div>
+        </div>
+
+        <div id="showMessage" class="position-absolute top-50 start-50 translate-middle">
+            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_utsfwa3k.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+            <h1 class="ml6">
+                <span class="text-wrapper">
+                    <span class="letters">I Love you!</span>
+                </span>
+            </h1>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <script>
+        // Correct codes
+        const correctCodes = {
+            top: "0808",
+            bottom: "0407",
+        };
+
+        // Track user input
+        const userInput = {
+            top: "",
+            bottom: "",
+        };
+
+        // Get buttons
+        const topButton = document.querySelector(".top-btn");
+        const bottomButton = document.querySelector(".bottom-btn");
+        const lock = document.getElementById("lock");
+
+        // Function to handle button click
+        const handleButtonClick = (button, type) => {
+            button.classList.toggle("expand"); // Toggle the expand class
+
+            // Add input field if expanded
+            if (button.classList.contains("expand")) {
+                const inputField = document.createElement("input");
+                inputField.type = "text";
+                inputField.placeholder = "Enter code";
+                inputField.maxLength = 4; // Limit input to 4 characters
+                button.appendChild(inputField);
+
+                // Focus on the input field
+                inputField.focus();
+
+                // Listen for input changes
+                inputField.addEventListener("input", (e) => {
+                    userInput[type] = e.target.value; // Update user input
+                    validateCodes(type); // Validate codes
+                });
+            } else {
+                // Remove input field if not expanded
+                const inputField = button.querySelector("input");
+                if (inputField) {
+                    button.removeChild(inputField);
+                }
+                userInput[type] = ""; // Clear user input
+                validateCodes(type); // Validate codes
+            }
+        };
+
+        // Function to validate codes
+        const validateCodes = (type) => {
+            // Check if the entered code matches the correct code
+            if (userInput[type] === correctCodes[type]) {
+                // Add correct class and remove wrong class
+                if (type === "top") {
+                    topButton.classList.add("correct");
+                    topButton.classList.remove("wrong");
+                } else {
+                    bottomButton.classList.add("correct");
+                    bottomButton.classList.remove("wrong");
+                }
+            } else {
+                // Add wrong class and remove correct class
+                if (type === "top") {
+                    topButton.classList.add("wrong");
+                    topButton.classList.remove("correct");
+                } else {
+                    bottomButton.classList.add("wrong");
+                    bottomButton.classList.remove("correct");
+                }
+            }
+
+            // Enable the lock only if both codes are correct
+            if (
+                userInput.top === correctCodes.top &&
+                userInput.bottom === correctCodes.bottom
+            ) {
+                lock.classList.remove("disabled"); // Enable the lock
+            } else {
+                lock.classList.add("disabled"); // Disable the lock
+            }
+        };
+
+        // Add event listeners
+        topButton.addEventListener("click", () => handleButtonClick(topButton, "top"));
+        bottomButton.addEventListener("click", () => handleButtonClick(bottomButton, "bottom"));
+
+        const coverTop = document.getElementById("coverTop");
+        const coverBottom = document.getElementById("coverBottom");
+        const proposalPage = document.getElementById("proposalPage");
+
+        // Unlock Animation
+        lock.addEventListener("click", () => {
+            if (lock.classList.contains("disabled")) return; // Do nothing if lock is disabled
+
+            coverTop.style.transform = "translate(-100%, -100%)";
+            coverBottom.style.transform = "translate(100%, 100%)";
+            lock.classList.add("shrink-disappear");
+            setTimeout(() => {
+                coverTop.style.display = "none";
+                coverBottom.style.display = "none";
+                proposalPage.style.display = "flex";
+            }, 1500);
+        });
+
+        // Proposal Page Logic
+        const parentElement = document.getElementById("parentElement");
+        const showMessage = document.getElementById("showMessage");
+        const changeColor = document.body.style;
+
+        // Lyrics with timing
+        const lyrics = [
+            { text: "Raj wakes up, sees the sunlight glow, ✨", start: 10, end: 15.3 },
+            { text: "Dreamin’ ‘bout you, just thought you should know, 🌸", start: 15.9, end: 21 },
+            { text: "Every cuddle, every smile you share,", start: 21.6, end: 26 },
+            { text: "Feels like a hug from my teddy bear. 🧸💖", start: 26.6, end: 31 },
+            { text: "", start: 31, end: 31.4 }, // Empty line
+            { text: "Oh, Kim Heng, you’re soft and sweet,", start: 31.4, end: 36 },
+            { text: "A love so warm, it’s all I need,", start: 36.6, end: 41 },
+            { text: "With you, my world feels so right,", start: 42.5, end: 46.2 },
+            { text: "Holding you close, every single night. 🌙", start: 46.7, end: 51.9 },
+            { text: "", start: 51.9, end: 52.2 }, // Empty line
+            { text: "My teddy bear, Kim Heng, you're mine,", start: 52.2, end: 57.1 },
+            { text: "Wrapped in your arms, love so divine, 💕", start: 57.9, end: 62.6 },
+            { text: "Dudu and Bubu, forever we stay,", start: 63, end: 68.2 },
+            { text: "Dancing in love on Teddy Bear Day. 🎶✨", start: 68.2, end: 74 },
+            { text: "", start: 74, end: 74.8 }, // Empty line
+            { text: "Your laughter’s like a melody,", start: 74.8, end: 77.7 },
+            { text: "Soft as clouds, so heavenly, ☁️", start: 78, end: 79.3 },
+            { text: "Every heartbeat sings your name,", start: 80, end: 81.9 },
+            { text: "Raj and Heng, love’s little flame. 🔥", start: 82.8, end: 85.9 },
+            { text: "No stuffed bear could ever replace,", start: 86.6, end: 89 },
+            { text: "The warmth of your love, your sweet embrace, 🤗", start: 89.3, end: 95 },
+            { text: "So here’s my heart, I’m giving it too,", start: 95.5, end: 100 },
+            { text: "My teddy bear, I love you. 💖", start: 100.2, end: 104.8 },
+            { text: "", start: 104.8, end: 105.2 }, // Empty line
+            { text: "Dudu and Bubu, hand in hand,", start: 105.2, end: 110.8 },
+            { text: "A love so pure, forever will stand,", start: 111, end: 115 },
+            { text: "Kim Heng, my heart’s safe with you,", start: 115.4, end: 120 },
+            { text: "Happy Teddy Bear Day, my love so true. 🧸💕", start: 120.6, end: 126 },
+            { text: "🎵🎶🎧🎸🎹", start: 126.7, end: 130 }
+        ];
+
+        // Function to display lyrics with timing
+        const displayLyrics = () => {
+            const lyricsContainer = document.getElementById("lyricsContainer");
+            const loveSong = document.getElementById("loveSong");
+
+            let currentLyricIndex = 0;
+
+            const updateLyrics = () => {
+                const currentTime = loveSong.currentTime;
+
+                // Check if the current time matches the lyric timing
+                if (
+                    currentLyricIndex < lyrics.length &&
+                    currentTime >= lyrics[currentLyricIndex].start &&
+                    currentTime < lyrics[currentLyricIndex].end
+                ) {
+                    lyricsContainer.textContent = lyrics[currentLyricIndex].text;
+                } else if (currentLyricIndex < lyrics.length && currentTime >= lyrics[currentLyricIndex].end) {
+                    currentLyricIndex++; // Move to the next lyric
+                }
+            };
+
+            // Update lyrics every 100ms
+            setInterval(updateLyrics, 100);
+        };
+
+        const propose = () => {
+            parentElement.style.display = "none";
+            showMessage.style.display = "block";
+            changeColor.background = "linear-gradient(116.82deg, #ff94e7 0%, #27cbff 100%)";
+
+            const loveSong = document.getElementById("loveSong");
+            loveSong.play();
+
+            // Start displaying lyrics when the song starts playing
+            displayLyrics();
+
+            // Create and append the "Surprise" button
+            const surpriseButton = document.createElement("button");
+            surpriseButton.innerText = "Surprise";
+            surpriseButton.style.position = "fixed";
+            surpriseButton.style.bottom = "20px";
+            surpriseButton.style.left = "50%";
+            surpriseButton.style.transform = "translateX(-50%)";
+            surpriseButton.style.padding = "10px 20px";
+            surpriseButton.style.backgroundColor = "#ff4690";
+            surpriseButton.style.color = "white";
+            surpriseButton.style.border = "none";
+            surpriseButton.style.borderRadius = "50px";
+            surpriseButton.style.cursor = "pointer";
+            surpriseButton.style.fontSize = "16px";
+            surpriseButton.style.zIndex = "1000";
+
+            // Add hover effect
+            surpriseButton.addEventListener("mouseover", () => {
+                surpriseButton.style.backgroundColor = "#ff1a6b";
+            });
+            surpriseButton.addEventListener("mouseout", () => {
+                surpriseButton.style.backgroundColor = "#ff4690";
+            });
+
+            // Append the button to the body
+            document.body.appendChild(surpriseButton);
+
+            // Add an event listener to the "Surprise" button
+            surpriseButton.addEventListener("click", () => {
+                // Open the new HTML page in the same window
+                window.open("Teddy2.html", "_self");
+            });
+        };
+
+        // Animate Text with Anime JS
+        var textWrapper = document.querySelector(".ml6 .letters");
+        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+        anime.timeline({ loop: true })
+            .add({
+                targets: ".ml6 .letter",
+                translateY: ["1.1em", 0],
+                translateZ: 0,
+                duration: 750,
+                delay: (el, i) => 50 * i,
+            })
+            .add({
+                targets: ".ml6",
+                opacity: 0,
+                duration: 1000,
+                easing: "easeOutExpo",
+                delay: 1000,
+            });
+    </script>
+</body>
+</html>
